@@ -5,7 +5,7 @@ save ground truth with aruco tag (kinect, meta ports)
 
 ### Aruco
 1. see `/tags`, `466.jpg` is for reference on the table
-2. see `/tags/DICT_6X6_250`, `3`, `4`, `5` are for end-effector
+2. see `/tags/DICT_6X6_250`, `3`, `4`, `5` are for end-effector, as shown in [this](https://github.com/ivalab/aruco_tag_saver/blob/master/imgs/pic_0001.png)
 3. see `/tags/DICT_5X5_250`, `5x5_1000-7_8_9_10` are for target object
 
 ### using tcp/ip
