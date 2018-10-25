@@ -20,6 +20,7 @@ OBJECT_TYPE = "scoop"
 CAM_POSE = 0
 OBJ_POSE = 0
 START_COUNT = 0
+OBJ_POSE_ONLY = True
 
 tmpPathGT_pose = './data/graspPositions.txt'
 tmpPathGT_ar = './data/arucoPositions.txt'
@@ -34,7 +35,7 @@ if not os.path.exists(IMG_SAVEPATH):
     os.makedirs(IMG_SAVEPATH)
 
 cameraMatrix = np.array([[524.82863, 0.0,  348.39958],
-                         [0.0, 5525.53556, 228.20485],
+                         [0.0, 525.53556, 228.20485],
                          [0.0, 0.0, 1.0]])
 distCoeffs = np.array([0.16950, -0.20215, -0.02522, 0.02576, 0.0])
 
@@ -235,8 +236,8 @@ def get_M_Cm0(gray, image_init, visualize=False):
 def get_M_m0mP(object_type):
     if object_type == 'scoop':
         M_m0mP1 = np.zeros((4, 4))
-        M_m0mP1[:3, :3] = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.08, -0.10, 0.010))
+        M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
+        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -251,8 +252,8 @@ def get_M_m0mP(object_type):
         M_m0mP = [M_m0mP1, M_m0mP2, M_m0mP3]
     elif object_type == 'screwdriver':
         M_m0mP1 = np.zeros((4, 4))
-        M_m0mP1[:3, :3] = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.08, -0.10, 0.004))
+        M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
+        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -267,8 +268,8 @@ def get_M_m0mP(object_type):
         M_m0mP = [M_m0mP1, M_m0mP2, M_m0mP3]
     elif object_type == 'mouse':
         M_m0mP1 = np.zeros((4, 4))
-        M_m0mP1[:3, :3] = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.015, -0.10, 0.012))
+        M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
+        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -283,8 +284,8 @@ def get_M_m0mP(object_type):
         M_m0mP = [M_m0mP1, M_m0mP2, M_m0mP3]
     elif object_type == 'ball':
         M_m0mP1 = np.zeros((4, 4))
-        M_m0mP1[:3, :3] = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.05, -0.10, 0.039))
+        M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
+        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -299,8 +300,8 @@ def get_M_m0mP(object_type):
         M_m0mP = [M_m0mP1, M_m0mP2, M_m0mP3]
     else:
         M_m0mP1 = np.zeros((4, 4))
-        M_m0mP1[:3, :3] = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.05, -0.10, 0.07))
+        M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
+        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -320,12 +321,13 @@ def get_M_Cmp(gray, M_Cm0, M_m0mP, visualize=False):
     markerLength = 0.063
     M_Cmp = []
     for tmp_M in M_m0mP:
-        tmp_M_Cmp = np.dot(np.dot(M_Cm0, tmp_M), M_Yflip)
+        tmp_M_Cmp = np.dot(M_Cm0, tmp_M)
         if visualize:
             rvec, _ = cv2.Rodrigues(tmp_M_Cmp[:3, :3])
             tvec = tmp_M_Cmp[:3, 3]
             aruco.drawAxis(gray, cameraMatrix, distCoeffs, rvec, tvec, markerLength)
         M_Cmp.append(tmp_M_Cmp)
+        if OBJ_POSE_ONLY: break
     return M_Cmp
 
 
@@ -341,6 +343,7 @@ def get_M_bmp(M_CL, M_Cmp):
     for tmp_M in M_Cmp:
         tmp_M_bmp = np.dot(M_bC, tmp_M)
         M_bmp.append(tmp_M_bmp)
+        if OBJ_POSE_ONLY: break
     return M_bmp, M_bL
 
 
