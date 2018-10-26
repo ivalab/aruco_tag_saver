@@ -18,7 +18,7 @@ python camera_demo_arucoTag_5X5_250.py.py
 2. default port is `2328`
 
 ### using Kinect
-1. install [libfreenect](https://naman5.wordpress.com/2014/06/24/experimenting-with-kinect-using-opencv-python-and-open-kinect-libfreenect/) for kinect 
+1. install [libfreenect](https://naman5.wordpress.com/2014/06/24/experimenting-with-kinect-using-opencv-python-and-open-kinect-libfreenect/) for kinect (warning: never do upgrade) 
 2. [calibrate](http://rgbdemo.org/index.php/Documentation/KinectCalibrationTheory) kinect
 3. run script
 ```
