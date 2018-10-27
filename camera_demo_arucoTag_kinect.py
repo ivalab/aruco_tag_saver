@@ -599,9 +599,9 @@ def aruco_pose(frame_current):
     return gray
 
 
-TILT_MAX = 30
+TILT_MAX = 90
 TILT_STEP = 5
-TILT_MIN = -30
+TILT_MIN = -90
 TILT = 0
 
 # reset the camera tilt
