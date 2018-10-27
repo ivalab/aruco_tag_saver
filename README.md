@@ -40,3 +40,33 @@ tmpPathGT_pose = './data/graspPositions.txt'
 tmpPathGT_ar = './data/arucoPositions.txt'
 tmpPathGT = './data/graspPoseLabels.txt'
 ```
+
+### change tilt range for kinect
+1. `tilt.c`:
+```
+#define MAX_TILT_ANGLE 91
+#define MIN_TILT_ANGLE (-91)
+```
+
+2. `glview.c` (optional, only if you want to use this example):
+```
+	if (key == 'w') {
+		freenect_angle++;
+		if (freenect_angle > 30) {
+			freenect_angle = 30;
+		}
+		tilt_changed++;
+	}
+...
+	if (key == 'x') {
+		freenect_angle--;
+		if (freenect_angle < -30) {
+			freenect_angle = -30;
+		}
+		tilt_changed++;
+	}
+```
+3. remove `libfreenect.so` and `libfreenect_sync.so` under `/usr/lib/x86_64-linux-gnu/`
+4. make and make install `libfreenect.so` and `libfreenect_sync.so` and load libraries
+5. run Cython setup.py to generate module and link to new `.so`
+
