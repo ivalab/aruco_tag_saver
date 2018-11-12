@@ -188,7 +188,7 @@ def get_M_CL(gray, image_init, visualize=False):
 
 def get_M_Cm0(gray, image_init, visualize=False):
     # parameters
-    markerLength = 0.063
+    markerLength = 0.0635
     aruco_dict = aruco.Dictionary_get(aruco.DICT_5X5_250)
     parameters = aruco.DetectorParameters_create()
 
@@ -209,18 +209,18 @@ def get_M_Cm0(gray, image_init, visualize=False):
                            [0, 0, 1, 0],
                            [0, 0, 0, 1]])
         if ids[0] == 8:
-            M_mxm0 = np.array([[1,0,0,-0.121],
+            M_mxm0 = np.array([[1,0,0,-0.1205],
                                [0,1,0, 0.000],
                                [0,0,1, 0.000],
                                [0,0,0, 1]])
         elif ids[0] == 9:
             M_mxm0 = np.array([[1,0,0, 0.000],
-                               [0,1,0, 0.172],
+                               [0,1,0, 0.1715],
                                [0,0,1, 0.000],
                                [0,0,0, 1]])
         elif ids[0] == 10:
-            M_mxm0 = np.array([[1,0,0,-0.121],
-                               [0,1,0, 0.172],
+            M_mxm0 = np.array([[1,0,0,-0.1205],
+                               [0,1,0, 0.1715],
                                [0,0,1, 0.000],
                                [0,0,0, 1]])
         M_Cm0 = np.dot(M_Cm0, M_mxm0)
@@ -237,7 +237,7 @@ def get_M_m0mP(object_type):
     if object_type == 'scoop':
         M_m0mP1 = np.zeros((4, 4))
         M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
+        M_m0mP1[:3, 3] = np.array((0.06025, -0.08475, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -253,7 +253,7 @@ def get_M_m0mP(object_type):
     elif object_type == 'screwdriver':
         M_m0mP1 = np.zeros((4, 4))
         M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
+        M_m0mP1[:3, 3] = np.array((0.06025, -0.08475, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -269,7 +269,7 @@ def get_M_m0mP(object_type):
     elif object_type == 'mouse':
         M_m0mP1 = np.zeros((4, 4))
         M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
+        M_m0mP1[:3, 3] = np.array((0.06025, -0.08475, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -285,7 +285,7 @@ def get_M_m0mP(object_type):
     elif object_type == 'ball':
         M_m0mP1 = np.zeros((4, 4))
         M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
+        M_m0mP1[:3, 3] = np.array((0.06025, -0.08475, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
@@ -301,7 +301,7 @@ def get_M_m0mP(object_type):
     else:
         M_m0mP1 = np.zeros((4, 4))
         M_m0mP1[:3, :3] = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
-        M_m0mP1[:3, 3] = np.array((0.06, -0.0955, 0.000))
+        M_m0mP1[:3, 3] = np.array((0.06025, -0.08475, 0.000))
         M_m0mP1[3, :] = np.array([0, 0, 0, 1])
 
         M_m0mP2 = np.zeros((4, 4))
