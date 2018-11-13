@@ -21,6 +21,7 @@ CAM_POSE = 0
 OBJ_POSE = 0
 START_COUNT = 0
 OBJ_POSE_ONLY = True
+CAMERA_DIM = (640, 480)
 
 tmpPathGT_pose = './data/graspPositions.txt'
 tmpPathGT_ar = './data/arucoPositions.txt'
@@ -559,6 +560,68 @@ def rotationMatrixToEulerAngles(R):
 
     return np.array([x, y, z])
 
+def validSurrounding(M_Cmp_matrix, M_mpmx):
+    # given Camera to a pose, check if the center is within camera view
+
+    M_Cmx = np.dot(M_Cmp_matrix, M_mpmx)
+    imagePts = np.dot(cameraMatrix,M_Cmx[:3,3])
+    imagePts = imagePts[:2]/imagePts[2]
+
+    valid = False
+    print imagePts
+    if imagePts[0] <= CAMERA_DIM[0] and imagePts[0] >= 0 and imagePts[1] <= CAMERA_DIM[1] and imagePts[1] >= 0:
+        valid = True
+    return valid
+
+
+def validSurroundings(gray, M_Cmp):
+    # given Camera to object pose, check if four surrounding tags are within the camera view
+
+    if len(M_Cmp) == 4:
+        print ("OBJ_POSE_ONLY flag has to be set to True for this function")
+        return False, False, False, False
+
+    if len(M_Cmp) == 0:
+        print ("no object detected")
+        return False, False, False, False
+
+
+    M_Cmp_matrix = M_Cmp[0]
+
+    # mp to 7:
+    M_mpmx = np.array([[1, 0, 0, 0.06025],
+                       [0, 1, 0, -0.08475],
+                       [0, 0, 1, 0.000],
+                       [0, 0, 0, 1]])
+
+    valid_7 = validSurrounding(M_Cmp_matrix, M_mpmx)
+
+    # mp to 8:
+    M_mpmx = np.array([[1, 0, 0, -0.06025],
+                       [0, 1, 0, -0.08475],
+                       [0, 0, 1, 0.000],
+                       [0, 0, 0, 1]])
+
+    valid_8 = validSurrounding(M_Cmp_matrix, M_mpmx)
+
+    # mp to 9:
+    M_mpmx = np.array([[1, 0, 0, 0.06025],
+                       [0, 1, 0, 0.08475],
+                       [0, 0, 1, 0.000],
+                       [0, 0, 0, 1]])
+
+    valid_9 = validSurrounding(M_Cmp_matrix, M_mpmx)
+
+    # mp to 10:
+    M_mpmx = np.array([[1, 0, 0, -0.06025],
+                       [0, 1, 0, 0.08475],
+                       [0, 0, 1, 0.000],
+                       [0, 0, 0, 1]])
+
+    valid_10 = validSurrounding(M_Cmp_matrix, M_mpmx)
+
+    return valid_7, valid_8, valid_9, valid_10,
+
 
 def aruco_pose(frame_current):
 
@@ -580,6 +643,14 @@ def aruco_pose(frame_current):
 
     # get camera to grasp pose list
     M_Cmp = get_M_Cmp(gray, M_Cm0, M_m0mP, visualize=True)
+
+    # check if 4 surrounding aruco tags are in the camera view
+    valid_7, valid_8, valid_9, valid_10 = validSurroundings(gray, M_Cmp)
+    print ("valid_7 is " + str(valid_7))
+    print ("valid_8 is " + str(valid_8))
+    print ("valid_9 is " + str(valid_9))
+    print ("valid_10 is " + str(valid_10))
+    print valid_7 and valid_8 and valid_9 and valid_10
 
     # get base to grasp pose list
     M_bmp, M_bL = get_M_bmp(M_CL, M_Cmp)
