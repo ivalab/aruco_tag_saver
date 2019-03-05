@@ -3,6 +3,9 @@ save ground truth with aruco tag (kinect, meta ports)
 
 ## USAGE
 
+### Looking for a ROS version?
+please check [aruco_tag_saver_ros](https://github.com/ivalab/aruco_tag_saver_ros)
+
 ### Aruco
 1. see `/tags`, `466.jpg` is for reference on the table
 2. see `/tags/DICT_6X6_250`, `3`, `4`, `5` are for end-effector, as shown in [this](https://github.com/ivalab/aruco_tag_saver/blob/master/imgs/pic_0001.png)
